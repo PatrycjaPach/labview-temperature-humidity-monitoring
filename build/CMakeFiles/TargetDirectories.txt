@@ -620,7 +620,6 @@ C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/wifi_provisioning/CMakeFiles
 C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/wifi_provisioning/CMakeFiles/install.dir
 C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/wifi_provisioning/CMakeFiles/install/local.dir
 C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/wifi_provisioning/CMakeFiles/install/strip.dir
-C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/DHT11/CMakeFiles/__idf_DHT11.dir
 C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/DHT11/CMakeFiles/edit_cache.dir
 C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/DHT11/CMakeFiles/rebuild_cache.dir
 C:/Users/lenovo/OneDrive/Pulpit/DHT11/build/esp-idf/DHT11/CMakeFiles/list_install_components.dir

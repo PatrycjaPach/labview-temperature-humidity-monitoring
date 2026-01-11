@@ -1,14 +1,30 @@
-#include <cstdio> 
+#include <cstdio>
+#include "dht11.hpp" 
 
 extern "C" {
     #include "freertos/FreeRTOS.h"
     #include "freertos/task.h"
     #include "esp_log.h"
 }
-//DHT11 mogę na 5v lub 3.3v i mogę na gpio26
-extern "C" void app_main(void){
+
+
+extern "C" void app_main(void)
+{
+    // 1️⃣ Utworzenie obiektu czujnika
+    DHT11 dht(GPIO_NUM_26);
+
+    // 2️⃣ Inicjalizacja UART (jeśli masz ją w klasie)
+    dht.uart_init();
+
+    ESP_LOGI("MAIN", "DHT11 init OK");
 
     while(1){
-        vTaskDelay(pdMS_TO_TICKS(1000)); 
+        if(dht.read() && dht.checksum()){
+            dht.send_dht_uart();
+        } else {
+            ESP_LOGW("MAIN", "DHT11 read error");
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(2000)); // DHT11 max ~1Hz
     }
 }

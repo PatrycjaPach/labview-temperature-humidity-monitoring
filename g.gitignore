@@ -1,0 +1,34 @@
+# ===== LabVIEW =====
+
+# Skopiowane VIs (backupi przy edycji)
+*~*.vi
+*~*.ctl
+*~*.lvlib
+*~*.lvclass
+
+# Autozapisy
+*.vi.autosave
+*.ctl.autosave
+
+# Kompilowane pliki i cache
+*.compiled
+*.obj
+*.pdb
+
+# Cache projektu
+/.aliases
+/.lvimpt
+/.lvproject
+/.cache
+
+# Temporary build files
+/builds/
+/dist/
+
+# LabVIEW NXG (jeśli ktoś używał)
+*.gvi
+*.gcomp
+
+# ===== System =====
+.DS_Store
+Thumbs.db

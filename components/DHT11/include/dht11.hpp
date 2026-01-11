@@ -5,7 +5,9 @@
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "rom/ets_sys.h"   // ets_delay_us
-
+#include "driver/uart.h" //for UART
+#include <cstring> //for starlen
+#include <cstdio> //for snprintf
 /*RAMKA DHT11
 START OD ESP
 0-musi podać mój ESP32 "Hej"
@@ -29,14 +31,12 @@ private:
     gpio_num_t _pin {GPIO_NUM_26};
 
 public:
-    int64_t now=esp_timer_get_time();
-    bool result;
     uint8_t tab[5]; 
 
     DHT11(gpio_num_t pin):_pin(pin){
-        gpio_reset_pin(pin);
-        gpio_set_direction(pin, GPIO_MODE_OUTPUT);
-        gpio_set_pull_mode(pin, GPIO_PULLUP_ONLY);
+        gpio_reset_pin(_pin);
+        gpio_set_direction(_pin, GPIO_MODE_OUTPUT);
+        gpio_set_pull_mode(_pin, GPIO_PULLUP_ONLY);
         gpio_set_level(_pin, 1);
     }
 
@@ -53,10 +53,9 @@ public:
 
 
     bool start(){
-        int ok;
         for(int i=0; i<5;i++){
             tab[i]=0;
-        }
+        } //tab[5] cleaning
 
         //low from esp
         gpio_set_direction(_pin, GPIO_MODE_OUTPUT);
@@ -69,13 +68,13 @@ public:
         gpio_set_direction(_pin, GPIO_MODE_INPUT);
 
         if(!wait_level(0, 200)) {
-            return 0;
+            return false;
         }
         if(!wait_level(1,200)){
-            return 0;
+            return false;
         }
 
-        return 1;
+        return true;
     } //void start
 
     int read(){
@@ -84,6 +83,7 @@ public:
         }
         int bajtCount=0;
         int bajtIndex=0;
+        uint8_t bajt=0;
 
         for(int i=0; i<40; i++){
 
@@ -110,7 +110,6 @@ public:
             } else{
                 bit=1;
             }
-            uint8_t bajt;
 
             bajt<<=1;
             bajt|=bit;
@@ -123,15 +122,36 @@ public:
                 bajtCount=0;
             }
         } //for
+        if(bajtIndex!=5) return 0;
+        return 1;
     } //int read
 
     bool checksum(){
-        uint8_t sum;
-        if(sum!=tab[0]+tab[1]+tab[2]+tab[3]){
-            return sum==tab[4];
-        }
-    }//bool chcksum
+        uint8_t sum = (uint8_t)(tab[0] + tab[1] + tab[2] + tab[3]);
+        return sum == tab[4];
+    }
 
+
+    void uart_init(){
+        const uart_config_t cfg = {
+            .baud_rate = 115200,
+            .data_bits = UART_DATA_8_BITS,
+            .parity    = UART_PARITY_DISABLE,
+            .stop_bits = UART_STOP_BITS_1,
+            .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
+        };
+
+        uart_driver_install(UART_NUM_0, 1024, 0, 0, NULL, 0);
+        uart_param_config(UART_NUM_0, &cfg);
+    }
+
+    void send_dht_uart(){
+        char buf[64];
+
+        snprintf(buf, sizeof(buf), "T=%d.%dC RH=%d.%d%%\r\n", tab[2], tab[3], tab[0], tab[1]);
+
+        uart_write_bytes(UART_NUM_0, buf, strlen(buf));
+    }
 };//class
 
 #endif

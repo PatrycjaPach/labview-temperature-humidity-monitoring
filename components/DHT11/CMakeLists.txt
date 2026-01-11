@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "dht11.cpp"
+    SRCS ""
     INCLUDE_DIRS "include"
-    REQUIRES driver freertos
+    REQUIRES driver freertos esp_timer
 )
