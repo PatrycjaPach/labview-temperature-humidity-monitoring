@@ -90,7 +90,12 @@ This was a 2-person project. Each member was responsible for a different part of
 * Implemented dew point and heat index calculations and integrated their visualization into the graphical user interface
 
 
-### 👤 Antonia Zdźiebko contributions
+### 👤 Antonia Zdziebko contributions
+* Implementation of minimum and maximum value calculation and display for temperature and humidity
+* Added average temperature and humidity calculation
+* Implementation of threshold-based trend detection (increase / stable / decrease)
+* Added minimum and maximum values for dew point and heat index
+* Designed start/stop functionality for real-time data visualization
 
 
 
